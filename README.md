@@ -9,8 +9,6 @@ This task is a time-boxed, \~1-hour live coding exercise. The goal is not to fin
 You'll be building a backend service to process payments for a global booking platform, similar to Booking.com.
 
 #### What We're Evaluating:
-
-  * **System Design (Tier 0):** Can you design a scalable, resilient system?
   * **Coding Fundamentals (Tier 1-2):** Can you quickly ship something correct and functional?
   * **Code Quality:** Do you structure your code cleanly, even when rushing?
   * **Concurrency (Tier 3):** Do you know how to introduce concurrency safely?
@@ -27,30 +25,6 @@ You'll be building a backend service to process payments for a global booking pl
 
 Progress through these tiers in order. It's perfectly fine to jump ahead and leave `TODOs` if you clearly explain your plan.
 
-#### Tier 0 — System Design Exercise (Before Coding)
-
-**Scenario:** Design a payment processing system for a global booking platform.
-
-**Premise:**
-
-  * **Payment requests** arrive via a REST API.
-  * **Load is highly variable:** from a few per second to spikes of 10,000+ per second during peak events like flash sales.
-  * **Payment types vary:** from simple credit cards to complex e-wallets.
-  * All payments must be processed, and their status updated transactionally.
-  * The system should **auto-scale** to handle peaks while remaining cost-effective when idle.
-  * It must be **resilient** (handling failures gracefully) and provide idempotency for all requests.
-
-**Task:**
-Use any diagramming tool (e.g., Excalidraw, Miro, Draw.io) to propose a high-level architecture. Your diagram should include components for:
-
-  * Ingestion pipeline (API endpoint)
-  * Payment processing & orchestration
-  * Database for transaction status
-  * Auto-scaling mechanism
-  * Resilience / fault-tolerance
-  * Idempotency handling
-
-You don't need to code this part, but be ready to explain your design and the trade-offs you made.
 
 -----
 
