@@ -1,84 +1,84 @@
-Booking.com Payments System (60-Minute Live Exercise)
-This task is time-boxed to ~1 hour. You won’t finish everything, and that's expected. The goal is to see how you reason, prioritize, communicate trade-offs, and write code under constraints.
+I will re-format the provided technical interview challenge from a "logs system" to a "Booking.com-style payments system" as a `README.md` file suitable for a GitHub repository. The content will be structured with clear headings, a table of contents, and code blocks to represent the challenge requirements.
 
-Context
-You'll build a backend service to process payments for a booking platform similar to Booking.com.
+-----
 
-What We're Evaluating:
-Can you design a scalable, resilient system (Tier 0)?
+### 🏢 Booking.com Payments System (60-Minute Live Exercise)
 
-Can you quickly ship something correct (Tier 1–2)?
+This task is a time-boxed, \~1-hour live coding exercise. The goal is not to finish everything, but to demonstrate your ability to reason, prioritize, communicate trade-offs, and write clean code under pressure.
 
-Do you structure code cleanly, even when rushing?
+-----
 
-Do you know how to introduce concurrency safely (Tier 3)?
+### 📝 Context
 
-Can you think creatively about anomalies/performance (Tier 4), even if you only stub or explain?
+You'll be building a backend service to process payments for a global booking platform, similar to Booking.com.
 
-Deliverables (within the hour):
-Design diagram for Tier 0.
+#### What We're Evaluating:
 
-Working code for as many tiers as you can reasonably complete.
+  * **System Design (Tier 0):** Can you design a scalable, resilient system?
+  * **Coding Fundamentals (Tier 1-2):** Can you quickly ship something correct and functional?
+  * **Code Quality:** Do you structure your code cleanly, even when rushing?
+  * **Concurrency (Tier 3):** Do you know how to introduce concurrency safely?
+  * **Creative Thinking (Tier 4):** Can you think creatively about anomalies and performance, even if you only stub or explain the solution?
 
-Tiered Requirements
-Progress through tiers in order. It’s OK to jump ahead and leave TODOs if you explain your plan.
+#### Deliverables (within the hour):
 
-Tier 0 — System Design Exercise (Before Coding)
-Scenario: Design a payment processing system for a global booking platform.
-Premise:
+  * **Design Diagram:** A high-level architecture diagram for Tier 0.
+  * **Working Code:** A solution for as many tiers as you can reasonably complete.
 
-Payment requests come in via a REST API endpoint.
+-----
 
-Load is highly variable: sometimes a few per second, sometimes spikes of 10,000+ per second during flash sales.
+### 🚀 Tiered Requirements
 
-Payment types vary: from simple credit card payments to complex e-wallets and bank transfers.
+Progress through these tiers in order. It's perfectly fine to jump ahead and leave `TODOs` if you clearly explain your plan.
 
-All payments must be processed, and their status updated in a transactional manner.
+#### Tier 0 — System Design Exercise (Before Coding)
 
-The system should auto-scale to handle peaks efficiently while being cost-effective when idle.
+**Scenario:** Design a payment processing system for a global booking platform.
 
-It must be resilient (handle failures gracefully) and provide idempotency for requests.
+**Premise:**
 
-Task:
-Use any diagramming tool (e.g., Excalidraw, Lucidchart, Miro, Draw.io) to propose a high-level architecture.
-Show components for:
+  * **Payment requests** arrive via a REST API.
+  * **Load is highly variable:** from a few per second to spikes of 10,000+ per second during peak events like flash sales.
+  * **Payment types vary:** from simple credit cards to complex e-wallets.
+  * All payments must be processed, and their status updated transactionally.
+  * The system should **auto-scale** to handle peaks while remaining cost-effective when idle.
+  * It must be **resilient** (handling failures gracefully) and provide idempotency for all requests.
 
-Ingestion pipeline (API endpoint)
+**Task:**
+Use any diagramming tool (e.g., Excalidraw, Miro, Draw.io) to propose a high-level architecture. Your diagram should include components for:
 
-Payment processing & orchestration
+  * Ingestion pipeline (API endpoint)
+  * Payment processing & orchestration
+  * Database for transaction status
+  * Auto-scaling mechanism
+  * Resilience / fault-tolerance
+  * Idempotency handling
 
-Database for transaction status
+You don't need to code this part, but be ready to explain your design and the trade-offs you made.
 
-Auto-scaling mechanism
+-----
 
-Resilience / fault-tolerance
+#### Tier 1 — Process & Update (Baseline)
 
-Idempotency handling
+Read transaction data from `data/example_payments.json`, process each transaction, and write a summary of the final statuses to `output/summary.json`. Handle basic errors without crashing.
 
-You do not need to code this part, but be ready to explain trade-offs.
+**Input Format (`data/example_payments.json`):**
+Each line is a separate JSON object.
 
-Tier 1 — Process & Update (Baseline)
-Read transaction data from data/example_payments.json, process each transaction, and write a summary of final statuses to output/summary.json. Handle basic errors (don't crash on bad data).
-
-Input Format (each line is a JSON object):
-
-JSON
-
+```json
 {"transaction_id": "tx-123", "user_id": "user456", "booking_id": "book789", "amount": 100.50, "currency": "USD", "payment_method": "credit_card", "timestamp": "2025-07-22T12:34:56Z"}
-Processing Logic:
+```
 
-Simulate a payment gateway call:
+**Processing Logic:**
 
-payment_id is a hash of transaction_id.
+  * Simulate a payment gateway call.
+  * If the `transaction_id` ends in an **even** number, the payment **succeeds** (`"status": "succeeded"`).
+  * If the `transaction_id` ends in an **odd** number, the payment **fails** (`"status": "failed"`).
+  * Add a `gateway_response` field to the output.
 
-Simulate success/failure: odd transaction_id numbers fail ("status": "failed"), even ones succeed ("status": "succeeded").
+**Example output (`output/summary.json`):**
 
-Add a gateway_response field to the output.
-
-Example summary (output/summary.json):
-
-JSON
-
+```json
 [
   {
     "transaction_id": "tx-123",
@@ -91,40 +91,25 @@ JSON
     "gateway_response": {"gateway_tx_id": "gtx-9988"}
   }
 ]
-Note: You may use a GPT tool to generate the initial solution for this tier. The goal is to get a working baseline quickly and then refine it yourself.
+```
 
-Suggested GPT Prompt for Initial Tier 1 Solution:
-Write the simplest possible program in <YOUR_LANGUAGE> that:
+**Note:** You may use a GPT tool to generate the initial solution for this tier. The goal is to get a working baseline quickly and then refine it yourself.
 
-Reads a JSON file line by line from data/example_payments.json.
+-----
 
-For each JSON object, simulate a payment process:
+#### Tier 2 — Deeper Analytics
 
-If transaction_id ends in an even number, set the status to "succeeded".
+In addition to Tier 1, compute the following analytics:
 
-If transaction_id ends in an odd number, set the status to "failed".
+  * Identify the **top 10 users** and **top 10 booking types** (e.g., based on a regex on `booking_id`) by transaction volume.
+  * Compute **peak payment hours** (group by hour of the day).
+  * Compute **total revenue** by currency.
 
-Write the final transaction objects to a new JSON file at output/summary.json.
+Extend the `output/summary.json` to include these analytics.
 
-Ignores malformed lines without stopping the program.
+**Example extended summary:**
 
-Keep it minimal — no over-engineering, no abstractions, no separation of concerns.
-
-Tier 2 — Deeper Analytics
-In addition to Tier 1:
-
-Identify the top 10 users and top 10 booking types (e.g., based on a regex on booking_id) by transaction volume.
-
-Compute peak payment hours (group by hour of the day).
-
-Compute total revenue by currency.
-
-Extend output/summary.json to include these analytics.
-
-Example extended summary:
-
-JSON
-
+```json
 {
   "transaction_statuses": [
     {"transaction_id": "tx-123", "status": "failed", ...},
@@ -133,49 +118,47 @@ JSON
   "analytics": {
     "total_revenue_by_currency": {"USD": 10000.50, "EUR": 5000.25},
     "top_users": ["user123", "user456", ...],
-    "top_booking_types": ["Hotel", "Flight", ...],
+    "top_booking_types": ["Hotel", "Flight", "..."],
     "peak_hours": ["12:00-13:00", "16:00-17:00"]
   }
 }
-Tier 3 — Concurrency & Asynchronous Processing
+```
+
+-----
+
+#### Tier 3 — Concurrency & Asynchronous Processing
+
 In addition to Tier 2:
 
-Request Handler: Implement an API endpoint (even a simple one) that accepts a payment request and adds it to a queue for processing.
+  * **Request Handler:** Implement a simple API endpoint that accepts a payment request and adds it to a queue for processing.
+  * **Worker Pool:** Use threads, async, or worker processes to handle multiple payment requests from the queue concurrently.
+  * **Safety:** Show you've considered safety (race conditions, back-pressure) even if your implementation is minimal (e.g., a simple queue + worker pool).
 
-Worker Pool: Use threads/async/workers to process multiple payment requests concurrently from the queue.
+-----
 
-Safety: Show you considered safety (race conditions, back-pressure) even if it's minimal (e.g., a queue + worker pool).
+#### Tier 4 — Anomalies & Performance (Stretch)
 
-Tier 4 — Anomalies & Performance Constraints (Stretch)
-In addition to Tier 3 (design, pseudo-code or partial implementation is acceptable):
+Design, pseudo-code, or partially implement the following:
 
-Anomaly detection: Define and detect at least one anomaly type (e.g., duplicate transaction_id, unusually high transaction amount, a single user attempting many failed payments in a short time). Output to output/anomalies.json.
+  * **Anomaly Detection:** Define and detect at least one anomaly type, such as:
+      * Duplicate `transaction_id`
+      * Unusually high transaction amount
+      * A single user attempting many failed payments in a short period
+        Output anomalies to `output/anomalies.json`.
+  * **Performance/Memory:** Log or print the execution time and peak memory usage of your process.
+  * **Scalability Thought Experiment:** Briefly outline how you'd handle billions of transactions under a 500MB RAM cap with a `<1s` latency for a single payment request.
 
-Performance/Memory visibility: Log or print execution time and peak memory usage.
+-----
 
-Scalability thought experiment: Briefly outline (code or notes) how you'd handle larger inputs (billions of transactions) under a 500MB RAM cap and <1s latency for a single payment request.
+### 💻 Tech Instructions
 
-Tech Instructions
-Use any backend language: Python, .NET, Node.js, Rust, Go, etc.
+  * Use any backend language you prefer: Python, .NET, Node.js, Rust, Go, etc.
+  * You may use the internet to look up syntax.
+  * **Except for the initial Tier 1 baseline, do not use AI to generate a working solution.** We want to see your problem-solving ability, not someone else's.
 
-Use the internet to look up syntax if you need.
+### 💡 Tips
 
-Except for the initial Tier 1 baseline, do not use AI to generate a working solution—we are interested to see your thought process and problem-solving ability, not someone else’s.
-
-Tips
-Small, composable functions win over giant scripts.
-
-Leave TODO: comments where you skip (explain briefly).
-
-For concurrency, a simple worker pool beats over-engineering.
-
-Good luck—have fun and narrate your thinking as you go!
-
-
-
-
-
-
-
-
-
+  * Prefer small, composable functions over giant scripts.
+  * Leave `TODO:` comments where you skip a part, and briefly explain your plan.
+  * For concurrency, a simple worker pool is a great starting point.
+  * Good luck, have fun, and narrate your thinking as you go\!
