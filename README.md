@@ -1,7 +1,3 @@
-I will re-format the provided technical interview challenge from a "logs system" to a "Booking.com-style payments system" as a `README.md` file suitable for a GitHub repository. The content will be structured with clear headings, a table of contents, and code blocks to represent the challenge requirements.
-
------
-
 ### 🏢 Booking.com Payments System (60-Minute Live Exercise)
 
 This task is a time-boxed, \~1-hour live coding exercise. The goal is not to finish everything, but to demonstrate your ability to reason, prioritize, communicate trade-offs, and write clean code under pressure.
