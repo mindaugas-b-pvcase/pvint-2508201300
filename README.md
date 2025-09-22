@@ -15,8 +15,6 @@ You'll be building a backend service to process payments for a global booking pl
   * **Creative Thinking (Tier 4):** Can you think creatively about anomalies and performance, even if you only stub or explain the solution?
 
 #### Deliverables (within the hour):
-
-  * **Design Diagram:** A high-level architecture diagram for Tier 0.
   * **Working Code:** A solution for as many tiers as you can reasonably complete.
 
 -----
