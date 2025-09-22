@@ -47,7 +47,27 @@ Each line is a separate csv.
 }
 ```
 
-**Note:** You may use a GPT tool to generate the initial solution for this tier. The goal is to get a working baseline quickly and then refine it yourself.
+Note: You may use a GPT tool to generate the initial solution for this tier. The goal is to get a working baseline quickly and then refine it yourself.
+
+Suggested GPT Prompt for Initial Tier 1 Solution:
+
+Write the simplest possible program in <YOUR_LANGUAGE> that:
+1. Reads a text file line by line from data/input.txt.
+2. Counts how many times each log level (INFO, WARN, ERROR) appears.
+3. Writes a JSON file to output/summary.json with counts per log level.
+4. Ignores malformed lines without stopping the program.
+
+Keep it minimal — no over*engineering, no abstractions, no separation of concerns.
+
+Each line has the shape: [timestamp] [log_level] [service_name] [user_id] [message]
+Example: 2025-07-22T12:34:56Z SUCCESS PaymentGateway tx-123 Payment processed successfully.
+
+Example summary:
+{
+  "INFO": 1000,
+  "WARN": 120,
+  "ERROR": 30
+}
 
 -----
 
