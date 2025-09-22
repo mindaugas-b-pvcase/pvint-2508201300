@@ -27,11 +27,11 @@ Progress through these tiers in order. It's perfectly fine to jump ahead and lea
 -----
 
 #### Tier 1 — Process & Update (Baseline)
+Read data from [data/example_input.txt](./data/example_input.txt), count occurrences of each log level (e.g., INFO, WARN, ERROR) and write summary JSON to output/summary.json. Handle basic errors (don’t crash on bad data).
 
-Read transaction data from `data/example_payments.json`, process each transaction, and write a summary of the final statuses to `output/summary.json`. Handle basic errors without crashing.
+Each line has the shape: [timestamp] [log_level] [service_name] [user_id] [message], Example: `2025-07-22T12:34:56Z INFO AuthenticationService user123 User login successful`.
 
 **Input Format (`data/example_payments.json`):**
-Each line is a separate csv.
 
 ```csv
 2025-07-22T12:34:56Z SUCCESS PaymentGateway tx-123 Payment processed successfully.
@@ -43,14 +43,17 @@ Each line is a separate csv.
 ```json
 {
   "SUCCESS": 1000,
-  "FAILURE": 120
+  "FAILURE": 120,
+  "ERROR": 30
 }
 ```
 
-Note: You may use a GPT tool to generate the initial solution for this tier. The goal is to get a working baseline quickly and then refine it yourself.
+
+> Note: You may use a GPT tool to generate the initial solution for this tier. The goal is to get a working baseline quickly and then refine it yourself.
 
 Suggested GPT Prompt for Initial Tier 1 Solution:
 
+```txt
 Write the simplest possible program in <YOUR_LANGUAGE> that:
 1. Reads a text file line by line from data/input.txt.
 2. Counts how many times each log level (INFO, WARN, ERROR) appears.
@@ -60,7 +63,7 @@ Write the simplest possible program in <YOUR_LANGUAGE> that:
 Keep it minimal — no over*engineering, no abstractions, no separation of concerns.
 
 Each line has the shape: [timestamp] [log_level] [service_name] [user_id] [message]
-Example: 2025-07-22T12:34:56Z SUCCESS PaymentGateway tx-123 Payment processed successfully.
+Example: 2025-07-22T12:34:56Z INFO Payments user123 User login successful
 
 Example summary:
 {
@@ -68,7 +71,7 @@ Example summary:
   "WARN": 120,
   "ERROR": 30
 }
-
+```
 -----
 
 #### Tier 2 — Deeper Analytics
@@ -85,14 +88,14 @@ Extend the `output/summary.json` to include these analytics.
 
 ```json
 {
-  "transaction_statuses": [
-    {"transaction_id": "tx-123", "status": "failed", ...},
-    ...
-  ],
+  "transaction_statuses": {
+    "SUCCESS": 1000,
+    "FAILURE": 120
+  },
   "analytics": {
-    "total_revenue_by_currency": {"USD": 10000.50, "EUR": 5000.25},
-    "top_users": ["user123", "user456", ...],
-    "top_booking_types": ["Hotel", "Flight", "..."],
+    "success_failure_ratio": 8.33,
+    "top_services": ["PaymentGateway", "FraudDetection", "..."],
+    "top_transactions": ["tx-123", "tx-456", "..."],
     "peak_hours": ["12:00-13:00", "16:00-17:00"]
   }
 }
