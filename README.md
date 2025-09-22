@@ -31,34 +31,20 @@ Progress through these tiers in order. It's perfectly fine to jump ahead and lea
 Read transaction data from `data/example_payments.json`, process each transaction, and write a summary of the final statuses to `output/summary.json`. Handle basic errors without crashing.
 
 **Input Format (`data/example_payments.json`):**
-Each line is a separate JSON object.
+Each line is a separate csv.
 
-```json
-{"transaction_id": "tx-123", "user_id": "user456", "booking_id": "book789", "amount": 100.50, "currency": "USD", "payment_method": "credit_card", "timestamp": "2025-07-22T12:34:56Z"}
+```csv
+2025-07-22T12:34:56Z SUCCESS PaymentGateway tx-123 Payment processed successfully.
+2025-07-22T12:34:57Z FAILURE FraudDetection tx-124 High-risk transaction detected.
 ```
-
-**Processing Logic:**
-
-  * Simulate a payment gateway call.
-  * If the `transaction_id` ends in an **even** number, the payment **succeeds** (`"status": "succeeded"`).
-  * If the `transaction_id` ends in an **odd** number, the payment **fails** (`"status": "failed"`).
-  * Add a `gateway_response` field to the output.
 
 **Example output (`output/summary.json`):**
 
 ```json
-[
-  {
-    "transaction_id": "tx-123",
-    "status": "failed",
-    "gateway_response": {"message": "Invalid transaction ID"}
-  },
-  {
-    "transaction_id": "tx-124",
-    "status": "succeeded",
-    "gateway_response": {"gateway_tx_id": "gtx-9988"}
-  }
-]
+{
+  "SUCCESS": 1000,
+  "FAILURE": 120
+}
 ```
 
 **Note:** You may use a GPT tool to generate the initial solution for this tier. The goal is to get a working baseline quickly and then refine it yourself.
